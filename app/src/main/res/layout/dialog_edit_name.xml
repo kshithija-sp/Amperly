@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rename dialog: one field, its caption, and the reason the name matters. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_edit_name_body"
+        android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editNameField"
+        style="@style/Widget.Amperly.TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/amp_space_m"
+        android:hint="@string/account_edit_name_hint"
+        app:boxBackgroundMode="outline"
+        app:counterEnabled="true"
+        app:counterMaxLength="60">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapWords"
+            android:maxLength="60"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Amperly.BodyStrong" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

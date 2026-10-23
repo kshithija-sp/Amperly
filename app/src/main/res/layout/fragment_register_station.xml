@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Register an existing charger.
+
+  Seventeen inputs on one scroll was the longest unbroken form in the app. They are
+  now three cards that match how a host actually thinks about their charger:
+  where it is, what it costs, and the first port they want to expose. Short numeric
+  pairs share a row to cut the scroll length roughly in half.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_screen_padding"
+        android:paddingBottom="@dimen/amp_space_xl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GROW THE NETWORK"
+            android:textAppearance="@style/TextAppearance.Amperly.Eyebrow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/host_register_title"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Amperly.ScreenTitle" />
+
+        <!-- =========================================================== Location -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/host_section_location"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/host_station_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/stationNameEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/host_address">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/addressEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="2"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Amperly.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/host_latitude">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/latitudeEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Amperly.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/amp_space_s"
+                        android:layout_weight="1"
+                        android:hint="@string/host_longitude">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/longitudeEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!--
+                  The host can type the coordinates or simply tap the charger on the map.
+                  The pin is draggable and the fields follow it, which is how almost every
+                  host will actually place a station they are standing next to.
+                -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/map_pick_hint"
+                    android:textAppearance="@style/TextAppearance.Amperly.BodySmall" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.Amperly.Card.Map"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/amp_map_panel_height"
+                    android:layout_marginTop="@dimen/amp_space_s">
+
+                    <com.amperly.app.core.map.MapContainerView
+                        android:id="@+id/stationMapContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/useGpsButton"
+                    style="@style/Widget.Amperly.Button.Outlined"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/map_pick_use_gps" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/host_location_type"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <Spinner
+                    android:id="@+id/locationTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/host_operating_hours">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/hoursEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="08:00 - 20:00" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ============================================================ Pricing -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/host_section_pricing"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/host_price">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/priceEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:text="18" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Amperly.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/host_service_fee">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/serviceFeeEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Amperly.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/amp_space_s"
+                        android:layout_weight="1"
+                        android:hint="@string/host_gateway_fee">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/gatewayFeeEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="4" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/host_meter_level"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <Spinner
+                    android:id="@+id/meterLevelSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/host_access_rules">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/accessRulesEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minLines="2" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ========================================================= First port -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/host_section_first_port"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Amperly.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/host_port_count">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/portCountEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:text="2" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Amperly.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/amp_space_s"
+                        android:layout_weight="1"
+                        android:hint="@string/host_port_power">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/portPowerEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="7.2" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/vehicle_connector"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <Spinner
+                    android:id="@+id/portConnectorSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/portDcCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/host_port_dc" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/registerStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveStationButton"
+            style="@style/Widget.Amperly.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/host_submit_station" />
+    </LinearLayout>
+</ScrollView>

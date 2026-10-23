@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Itemized receipt.
+
+  The line items are built at runtime into receiptContainer, so the layout's job is
+  to frame them: a card for the breakdown, a rule and an emphasised total, then the
+  "verified meter readings decide the bill" disclaimer as a panel the user actually
+  reads rather than grey small print.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_screen_padding"
+        android:paddingBottom="@dimen/amp_space_xl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAYMENT COMPLETE"
+            android:textAppearance="@style/TextAppearance.Amperly.Eyebrow" />
+
+        <TextView
+            android:id="@+id/receiptTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/receipt_title"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Amperly.ScreenTitle" />
+
+        <TextView
+            android:id="@+id/receiptStationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_xs"
+            android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:id="@+id/receiptContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:background="?attr/colorOutlineVariant" />
+
+        <TextView
+            android:id="@+id/receiptTotalText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:textAppearance="@style/TextAppearance.Amperly.Metric" />
+
+        <TextView
+            android:id="@+id/receiptDisclaimerText"
+            style="@style/Widget.Amperly.Notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/receipt_disclaimer" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reportIssueButton"
+            style="@style/Widget.Amperly.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_l"
+            android:text="@string/report_title" />
+    </LinearLayout>
+</ScrollView>

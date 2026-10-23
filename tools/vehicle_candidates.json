@@ -1,0 +1,24 @@
+{
+  "notes": "Candidate list for tools: ./gradlew :app:generateVehicleSpecs. Entries already present in assets/vehicle_specs.json are reported as covered; the rest are estimated from their name and body silhouette and flagged for manual review before being promoted into the owned database.",
+  "candidates": [
+    { "make": "Tata", "model": "Nexon EV", "variant": "Empowered+" },
+    { "make": "Tata", "model": "Curvv EV", "variant": "Accomplished+" },
+    { "make": "Tata", "model": "Harrier EV", "variant": "Fearless+" },
+    { "make": "Mahindra", "model": "XEV 9e", "variant": "Pack Three" },
+    { "make": "Mahindra", "model": "BE 6", "variant": "Pack Two" },
+    { "make": "MG", "model": "Windsor EV", "variant": "Essence" },
+    { "make": "Hyundai", "model": "Creta Electric", "variant": "Excellence" },
+    { "make": "Kia", "model": "EV6", "variant": "GT-Line" },
+    { "make": "BYD", "model": "Seal", "variant": "Dynamic" },
+    { "make": "Citroen", "model": "eC3", "variant": "Shine" },
+    { "make": "Maruti Suzuki", "model": "eVitara", "variant": "Zeta" },
+    { "make": "BMW", "model": "iX1", "variant": "xDrive30" },
+    { "make": "Mercedes-Benz", "model": "EQS SUV", "variant": "450 4MATIC" },
+    { "make": "Volvo", "model": "EX30", "variant": "Twin Motor" },
+    { "make": "Tesla", "model": "Model Y", "variant": "Long Range" },
+    { "make": "Rivian", "model": "R2", "variant": "Adventure" },
+    { "make": "Ford", "model": "F-150 Lightning", "variant": "Lariat" },
+    { "make": "Toyota", "model": "bZ4X", "variant": "AWD" },
+    { "make": "Porsche", "model": "Macan Electric", "variant": "4S" }
+  ]
+}

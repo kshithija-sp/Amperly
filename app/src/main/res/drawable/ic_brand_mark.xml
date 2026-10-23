@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Amperly mark, for in-app use.
+
+  The same bolt as the launcher icon, scaled onto a 24dp grid so it lines up with the rest
+  of the icon set and can be tinted to whatever surface it lands on. Kept as a separate
+  file from ic_launcher_foreground on purpose: the launcher version is tuned for a mask
+  that crops its edges, this one is tuned to sit inside a toolbar or a badge.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M10.7,19.7 L9.7,19.7 L10.7,13.8 L6.9,13.8 L13.3,4.3 L14.3,4.3 L13.3,10.2 L17.1,10.2 Z" />
+</vector>

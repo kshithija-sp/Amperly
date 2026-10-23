@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "notes": "Tier 1 curated profiles for the native renderer. Every field is optional: dimensions and tyre here would override the owned spec database, proportions override the body template, and badge/wheelStyle/roofRails/accentColor are the curated visual details. There are no manufacturer logos, only plain text badges.",
+  "profiles": [
+    {
+      "make": "Tata",
+      "model": "Nexon EV",
+      "badge": "NEXON EV",
+      "wheelStyle": "SPOKE",
+      "roofRails": true,
+      "accentColor": "#C6F94C",
+      "proportions": {
+        "beltlineRatio": 0.64,
+        "archGap": 0.19
+      }
+    },
+    {
+      "make": "Tata",
+      "model": "Tiago EV",
+      "badge": "TIAGO.EV",
+      "wheelStyle": "SPOKE",
+      "proportions": {
+        "cabinStartRatio": -0.64
+      }
+    },
+    {
+      "make": "Tata",
+      "model": "Punch EV",
+      "badge": "PUNCH.EV",
+      "wheelStyle": "SPOKE",
+      "roofRails": true,
+      "proportions": {
+        "rearDropRatio": 0.015
+      }
+    },
+    {
+      "make": "MG",
+      "model": "ZS EV",
+      "badge": "ZS EV",
+      "wheelStyle": "AERO",
+      "roofRails": true
+    },
+    {
+      "make": "MG",
+      "model": "Comet EV",
+      "badge": "COMET",
+      "wheelStyle": "DISC"
+    },
+    {
+      "make": "BYD",
+      "model": "Atto 3",
+      "badge": "ATTO 3",
+      "wheelStyle": "SPOKE",
+      "roofRails": true
+    },
+    {
+      "make": "Tesla",
+      "model": "Model 3",
+      "badge": "MODEL 3",
+      "wheelStyle": "AERO",
+      "proportions": {
+        "endTaper": 0.34
+      }
+    },
+    {
+      "make": "Rivian",
+      "model": "R1S",
+      "badge": "R1S",
+      "wheelStyle": "SPOKE",
+      "roofRails": true,
+      "proportions": {
+        "endTaper": 0.2
+      }
+    },
+    {
+      "make": "Toyota",
+      "model": "Innova Crysta",
+      "badge": "INNOVA",
+      "wheelStyle": "DISC",
+      "roofRails": true,
+      "proportions": {
+        "cabinEndRatio": 0.4
+      }
+    },
+    {
+      "make": "Isuzu",
+      "model": "D-Max V-Cross",
+      "badge": "D-MAX",
+      "wheelStyle": "DISC",
+      "proportions": {
+        "rearDropRatio": 0.36
+      }
+    },
+    {
+      "make": "Maruti Suzuki",
+      "model": "Swift",
+      "badge": "SWIFT",
+      "wheelStyle": "SPOKE",
+      "proportions": {
+        "cabinStartRatio": -0.64
+      }
+    },
+    {
+      "make": "Porsche",
+      "model": "Taycan",
+      "badge": "TAYCAN",
+      "wheelStyle": "AERO",
+      "proportions": {
+        "cabinStartRatio": -0.48,
+        "endTaper": 0.38
+      }
+    }
+  ]
+}

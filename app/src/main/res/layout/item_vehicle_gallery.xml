@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.Amperly.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/amp_space_s">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_space_m">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/galleryTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.Amperly.BodyStrong"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/galleryBodyText"
+                style="@style/Widget.Amperly.Badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_stage"
+                android:clipToOutline="true">
+
+                <com.amperly.app.ui.Car3DView
+                    android:id="@+id/galleryCarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="96dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/amp_space_s"
+                android:background="@drawable/bg_placeholder"
+                android:clipToOutline="true">
+
+                <ImageView
+                    android:id="@+id/galleryReferenceImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@null"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/galleryReferencePlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label"
+                    android:textSize="9sp" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/galleryDimensionsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:textAppearance="@style/TextAppearance.Amperly.Mono"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/galleryChassisText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+        <TextView
+            android:id="@+id/galleryTyreText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+        <TextView
+            android:id="@+id/gallerySourceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Amperly.BodySmall" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

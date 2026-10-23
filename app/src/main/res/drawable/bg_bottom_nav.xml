@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bottom navigation surface.
+
+  The prototype never lets a shadow do the separating: a hairline does. Drawing the line into
+  the bar's own background means it appears and disappears with the bar, so the sign-in screen
+  (where the bar is hidden) never has a stray line across the bottom.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/amp_line" />
+        </shape>
+    </item>
+    <item android:top="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/amp_surface_container_lowest" />
+        </shape>
+    </item>
+</layer-list>

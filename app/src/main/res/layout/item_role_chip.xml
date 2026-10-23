@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One role in the switcher strip. Built at runtime because the set of roles differs per account:
+  Consumer and Host always come together, Admin only for platform operations.
+
+  Styled as a segmented control: the parent ChipGroup draws the soft track, and the checked
+  chip becomes the white thumb. This reads as "which capacity am I acting as", not as a tag.
+-->
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Amperly.RoleChip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true" />

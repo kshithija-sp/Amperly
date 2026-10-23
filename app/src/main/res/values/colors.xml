@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ============================================================ Local UI tokens -->
+    <!--
+      The pixel/volt shell palette, in its dark form. The app is dark-only, so these are
+      the values every screen reads: a near-black garage background, cards lifted by a
+      few percent, light ink, and the one volt accent reserved for actions and status.
+      Names are unchanged from the light build, so no layout had to be restyled.
+    -->
+    <color name="app_bg">#0B0F0B</color>
+    <color name="surface">#141A15</color>
+    <color name="surface_alt">#1D251E</color>
+    <color name="surface_high">#232E25</color>
+    <color name="surface_highest">#2A3529</color>
+    <color name="ink">#F1F5EA</color>
+    <color name="ink_soft">#C7D1C0</color>
+    <color name="muted">#93A18F</color>
+    <color name="stroke">#2A3529</color>
+    <color name="stroke_light">#222B23</color>
+
+    <!-- Ink that sits ON the volt accent, always dark so the lime keeps its punch. -->
+    <color name="on_accent">#0E1410</color>
+
+    <color name="volt">#C6F94C</color>
+    <color name="volt_deep">#A9E32F</color>
+    <color name="volt_soft">#26361A</color>
+    <color name="volt_dim">#33461F</color>
+
+    <color name="stage_start">#151C16</color>
+    <color name="stage_end">#0B0F0B</color>
+    <color name="stage_ink">#F1F5EA</color>
+    <color name="stage_muted">#93A18F</color>
+    <color name="stage_line">#2A3529</color>
+
+    <color name="danger">#FF8A75</color>
+    <color name="danger_soft">#3A1F1B</color>
+    <color name="success">#5BD69B</color>
+    <color name="warning">#F0B45A</color>
+    <color name="warning_soft">#3A2C15</color>
+    <color name="success_soft">#173528</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- ======================================================= Platform colour names -->
+    <!-- These names are the Material 3 roles the imported screens are written against.
+         They are aliases of the tokens above, so every page inherits the shell's look
+         instead of carrying a second palette. -->
+    <color name="amp_primary">@color/ink</color>
+    <color name="amp_primary_dark">@color/volt</color>
+    <color name="amp_primary_light">@color/ink_soft</color>
+    <color name="amp_primary_container">@color/volt_soft</color>
+    <color name="amp_on_primary_container">@color/volt</color>
+    <color name="amp_on_primary">@color/on_accent</color>
+
+    <color name="amp_lime">@color/volt</color>
+    <color name="amp_lime_deep">@color/volt_deep</color>
+    <color name="amp_lime_soft">@color/volt_soft</color>
+    <color name="amp_lime_tint">#243216</color>
+    <color name="amp_on_lime">@color/on_accent</color>
+
+    <color name="amp_secondary">@color/volt_deep</color>
+    <color name="amp_secondary_container">#1F2B22</color>
+    <color name="amp_on_secondary_container">@color/ink</color>
+
+    <color name="amp_tertiary">@color/warning</color>
+    <color name="amp_tertiary_container">@color/warning_soft</color>
+    <color name="amp_on_tertiary_container">@color/warning</color>
+
+    <color name="amp_error">@color/danger</color>
+    <color name="amp_error_container">@color/danger_soft</color>
+    <color name="amp_on_error_container">@color/danger</color>
+
+    <color name="amp_surface">@color/app_bg</color>
+    <color name="amp_surface_container_lowest">@color/surface</color>
+    <color name="amp_surface_container_low">@color/surface</color>
+    <color name="amp_surface_container">@color/surface_alt</color>
+    <color name="amp_surface_container_high">@color/surface_high</color>
+    <color name="amp_surface_container_highest">@color/surface_highest</color>
+
+    <color name="amp_surface_variant">@color/stroke</color>
+    <color name="amp_on_surface">@color/ink</color>
+    <color name="amp_on_surface_variant">@color/muted</color>
+    <color name="amp_outline">@color/stroke</color>
+    <color name="amp_outline_variant">@color/stroke_light</color>
+
+    <color name="amp_muted">@color/muted</color>
+    <color name="amp_field_border">@color/stroke</color>
+    <color name="amp_line">@color/stroke_light</color>
+    <color name="amp_card">@color/surface</color>
+
+    <color name="amp_success">@color/success</color>
+    <color name="amp_success_container">@color/success_soft</color>
+    <color name="amp_warning">@color/warning</color>
+    <color name="amp_warning_container">@color/warning_soft</color>
+    <color name="amp_info">@color/volt_deep</color>
+    <color name="amp_info_container">@color/volt_soft</color>
+
+    <color name="amp_badge_bg">@color/volt_soft</color>
+    <color name="amp_badge_text">@color/volt</color>
+
+    <color name="amp_map_placeholder">#19211A</color>
+
+    <color name="amp_hero_start">@color/stage_start</color>
+    <color name="amp_hero_mid">#1B241C</color>
+    <color name="amp_hero_end">@color/stage_end</color>
+    <color name="amp_on_hero">@color/stage_ink</color>
+    <color name="amp_on_hero_muted">@color/stage_muted</color>
+    <color name="amp_hero_kicker">@color/volt</color>
+</resources>

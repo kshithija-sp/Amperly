@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Status pill: a small tinted rectangle with a 8dp radius, matching the prototype's chips. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/amp_badge_bg" />
+    <corners android:radius="8dp" />
+</shape>

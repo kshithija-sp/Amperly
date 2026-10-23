@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="amp_space_xs">4dp</dimen>
+    <dimen name="amp_space_s">8dp</dimen>
+    <dimen name="amp_space_m">16dp</dimen>
+    <dimen name="amp_space_l">24dp</dimen>
+    <dimen name="amp_space_xl">32dp</dimen>
+
+    <dimen name="amp_screen_padding">16dp</dimen>
+    <dimen name="amp_card_radius">18dp</dimen>
+    <dimen name="amp_hero_radius">22dp</dimen>
+    <dimen name="amp_field_radius">12dp</dimen>
+    <dimen name="amp_chip_radius">8dp</dimen>
+    <!-- A whisper of elevation: the hairline border does most of the separation. -->
+    <dimen name="amp_card_elevation">1dp</dimen>
+    <dimen name="amp_stat_tile_height">84dp</dimen>
+    <dimen name="amp_map_panel_height">220dp</dimen>
+    <dimen name="amp_hero_height">150dp</dimen>
+    <dimen name="amp_touch_target">48dp</dimen>
+</resources>

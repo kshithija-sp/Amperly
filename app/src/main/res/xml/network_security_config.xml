@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nothing in Amperly may travel over cleartext HTTP.
+
+  The app talks to exactly two origins — the Supabase project over HTTPS and Google's Maps
+  Platform over HTTPS — so there is no legitimate plaintext endpoint to allow. Denying it here
+  (and with android:usesCleartextTraffic="false" for API 24-27, which predate the default)
+  removes the downgrade path an attacker on the same network would otherwise use.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bottom navigation item colours.
+
+  The checked state is deep green sitting on the lime indicator pill; the resting state is
+  the muted ink used for secondary labels. Colour is never the only signal: the indicator
+  pill and the bolder label carry the state too.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="1.0" android:color="@color/amp_primary_dark" android:state_checked="true" />
+    <item android:alpha="1.0" android:color="@color/amp_muted" />
+</selector>

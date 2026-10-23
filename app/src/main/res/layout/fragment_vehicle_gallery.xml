@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug-only validation gallery (see VehicleGalleryFragment). It is opened from the profile
+  menu on debug builds and is not part of the consumer navigation.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/amp_screen_padding"
+        android:paddingTop="@dimen/amp_space_m"
+        android:paddingEnd="@dimen/amp_screen_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vehicle_gallery_title"
+            android:textAppearance="@style/TextAppearance.Amperly.ScreenTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_xs"
+            android:text="@string/vehicle_gallery_intro"
+            android:textAppearance="@style/TextAppearance.Amperly.Body" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/galleryRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/amp_space_s"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/amp_space_s"
+        android:paddingEnd="@dimen/amp_space_s"
+        android:paddingBottom="@dimen/amp_space_xl" />
+</LinearLayout>

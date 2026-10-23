@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Route and charging plan, on Google Maps.
+
+  Layout intent: the trip inputs are one bounded "form" card whose origin is already
+  known (the device's current location) and whose destination is a Google Place
+  search. The map is a Google map panel, and the Google turn-by-turn directions sit
+  directly under the summary. Everything the planner produces reads top-down in the
+  order a driver decides: what the plan costs in time, which stop to take, what to do
+  if that stop fails, how to get there, what was assumed.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_screen_padding"
+        android:paddingBottom="@dimen/amp_space_xl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="TRIP BUILDER"
+            android:textAppearance="@style/TextAppearance.Amperly.Eyebrow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/route_title"
+            android:textAppearance="@style/TextAppearance.Amperly.ScreenTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Tell us where you are headed. We will place the safest stops along the route."
+            android:textAppearance="@style/TextAppearance.Amperly.BodySmall" />
+
+        <!-- ============================================================ Inputs -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/route_start_label"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <TextView
+                    android:id="@+id/originText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/route_start_locating"
+                    android:textAppearance="@style/TextAppearance.Amperly.BodyStrong" />
+
+                <!--
+                  The place name for the fix, resolved by Google reverse geocoding. A coordinate
+                  pair is a debugging detail, not something a driver should have to read; when the
+                  lookup fails the line says it is a GPS position rather than inventing a place.
+                -->
+                <TextView
+                    android:id="@+id/originDetailText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/route_start_locating_address"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/setOriginOnMapButton"
+                    style="@style/Widget.Amperly.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="@string/route_start_pick_on_map" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/destinationField"
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/route_destination_hint">
+
+                    <!--
+                      The OutlinedBox autocomplete style is explicit here on purpose. A
+                      TextInputLayout only re-styles its child through its materialThemeOverlay, and
+                      the outlined overlay sets editTextStyle alone - never autoCompleteTextViewStyle.
+                      An unstyled field therefore kept the platform AutoCompleteTextView padding
+                      (none), and the box collapsed to about 23dp next to the 56dp fields below it.
+                    -->
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/destinationEdit"
+                        style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="2"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/destinationResolvedText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label"
+                    android:visibility="gone" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/route_current_soc">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/currentSocEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:text="55" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/socSourceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/route_corridor"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/corridorChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/corridor5Chip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="5 km" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/corridor10Chip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:checked="true"
+                        android:text="10 km" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/corridor20Chip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="20 km" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/route_preference"
+                    android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/preferenceChipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="false"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/prefFastestChip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:checked="true"
+                        android:text="@string/pref_fastest" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/prefCheapestChip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/pref_cheapest" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/prefReliableChip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/pref_reliable" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/prefShortestDetourChip"
+                        style="@style/Widget.Amperly.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/pref_shortest_detour" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/planRouteButton"
+                    style="@style/Widget.Amperly.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/route_plan_action" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- =============================================================== Map -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card.Map"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/amp_map_panel_height"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <com.amperly.app.core.map.MapContainerView
+                android:id="@+id/routeMapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ============================================================= Result -->
+        <TextView
+            android:id="@+id/routeSummaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:textAppearance="@style/TextAppearance.Amperly.BodyStrong" />
+
+        <TextView
+            android:id="@+id/confidenceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+        <TextView
+            android:id="@+id/planStatusText"
+            style="@style/Widget.Amperly.Notice.Warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:visibility="gone" />
+
+        <!-- ======================================================== Directions -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_l"
+            android:text="@string/route_directions_title"
+            android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+        <TextView
+            android:id="@+id/directionsMetaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+        <LinearLayout
+            android:id="@+id/directionsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/directionsNoteText"
+            style="@style/Widget.Amperly.Notice.Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:text="@string/route_directions_note" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_l"
+            android:text="@string/route_recommended_stop"
+            android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/plannedStopsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/route_backups"
+            android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/backupsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/route_candidates"
+            android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/candidatesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- ======================================================== Assumptions -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/amp_space_l"
+            android:background="?attr/colorOutlineVariant" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/route_assumptions"
+            android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+        <LinearLayout
+            android:id="@+id/assumptionsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/estimateNoticeText"
+            style="@style/Widget.Amperly.Notice.Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/route_estimate_notice" />
+
+        <!-- ================================================== Authoritative SoC -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/soc_update_title"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_xs"
+                    android:text="@string/soc_update_hint"
+                    android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/route_current_soc">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/actualSocEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/updateSocButton"
+                    style="@style/Widget.Amperly.Button.Tonal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/soc_update_action" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/startNavigationButton"
+                    style="@style/Widget.Amperly.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/route_start_navigation" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/recalcContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:orientation="vertical" />
+
+        <!-- =================================================== Out-of-range card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/noSafeChargerContainer"
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorErrorContainer"
+            app:strokeColor="?attr/colorError"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/soc_no_safe_charger"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle"
+                    android:textColor="?attr/colorOnErrorContainer" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_xs"
+                    android:text="@string/soc_no_safe_body"
+                    android:textAppearance="@style/TextAppearance.Amperly.Body"
+                    android:textColor="?attr/colorOnErrorContainer" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/widerRadiusButton"
+                    style="@style/Widget.Amperly.Button.Tonal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:text="@string/soc_wider_radius" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/slowerChargerButton"
+                    style="@style/Widget.Amperly.Button.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/soc_slower_charger" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/emergencyButton"
+                    style="@style/Widget.Amperly.Button.Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_xs"
+                    android:text="@string/soc_emergency" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

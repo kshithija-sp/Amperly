@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The top bar carries one action: the circular profile badge. Account, Vehicle, Safety and Sign
+  out live in the dropdown the badge opens (menu/profile_menu.xml), so the bar no longer grows a
+  row of icons. The badge is given a custom action view in MainActivity#onCreateOptionsMenu.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/ic_account"
+        android:title="@string/account_title"
+        app:showAsAction="always" />
+</menu>

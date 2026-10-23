@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  In-app navigation, driven by Google Maps Platform.
+
+  The map fills the screen and the driver-safe strip underneath carries only what is
+  needed while moving: the next maneuver, the remaining distance and the ETA. Every
+  action here is a single tap.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.amperly.app.core.map.MapContainerView
+        android:id="@+id/navMapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_space_m">
+
+        <TextView
+            android:id="@+id/navNextTurnText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+        <TextView
+            android:id="@+id/navInstructionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+        <TextView
+            android:id="@+id/navRemainingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_xs"
+            android:textAppearance="@style/TextAppearance.Amperly.BodyStrong" />
+
+        <TextView
+            android:id="@+id/navEtaText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Amperly.Label" />
+
+        <TextView
+            android:id="@+id/navStatusText"
+            style="@style/Widget.Amperly.Notice.Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:text="@string/nav_voice_note" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/navUpdateBatteryButton"
+            style="@style/Widget.Amperly.Button.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:text="@string/soc_update_action" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/navStopButton"
+            style="@style/Widget.Amperly.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:text="@string/nav_stop" />
+    </LinearLayout>
+</LinearLayout>

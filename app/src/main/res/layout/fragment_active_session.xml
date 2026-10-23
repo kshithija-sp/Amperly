@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Charging session.
+
+  This is the screen a user holds in one hand at the charger, so the meter
+  readings and their capture controls sit together in one card, the demo-meter
+  disclosure is a visible panel rather than a line of small print, and the
+  destructive-ish action (complete and bill) is the only filled button.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_screen_padding"
+        android:paddingBottom="@dimen/amp_space_xl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="CHARGING SESSION"
+            android:textAppearance="@style/TextAppearance.Amperly.Eyebrow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/session_title"
+            android:textAppearance="@style/TextAppearance.Amperly.ScreenTitle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="The bill is calculated from the meter readings captured here, never from an estimate."
+            android:textAppearance="@style/TextAppearance.Amperly.BodySmall" />
+
+        <TextView
+            android:id="@+id/sessionStateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_xs"
+            android:textAppearance="@style/TextAppearance.Amperly.BodyStrong" />
+
+        <TextView
+            android:id="@+id/sessionStepsText"
+            style="@style/Widget.Amperly.Notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s" />
+
+        <TextView
+            android:id="@+id/sessionInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+        <!-- ===================================================== Meter evidence -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/host_meter_evidence"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/host_record_readings"
+                    android:textAppearance="@style/TextAppearance.Amperly.BodySmall" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_m"
+                    android:hint="@string/session_start_meter">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/startMeterEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/session_end_meter">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/endMeterEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/captureStartButton"
+                        style="@style/Widget.Amperly.Button.Tonal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/session_check_in" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/simulateButton"
+                        style="@style/Widget.Amperly.Button.Text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/amp_space_s"
+                        android:layout_weight="1"
+                        android:text="@string/session_simulate" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/simulateResultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+                <TextView
+                    android:id="@+id/demoMeterNotice"
+                    style="@style/Widget.Amperly.Notice.Warning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/session_demo_meter" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- =========================================================== Actions -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/completeSessionButton"
+            style="@style/Widget.Amperly.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_l"
+            android:text="@string/session_complete" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/startChargingButton"
+            style="@style/Widget.Amperly.Button.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:text="@string/nav_session" />
+
+        <!-- No panel background: this is filled in after the bill is produced and
+             is empty before then, so a tinted box would render as a blank slab. -->
+        <TextView
+            android:id="@+id/sessionSummaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:textAppearance="@style/TextAppearance.Amperly.BodyStrong" />
+    </LinearLayout>
+</ScrollView>

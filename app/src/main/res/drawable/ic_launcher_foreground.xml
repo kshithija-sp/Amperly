@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon foreground: the Amperly bolt.
+
+  Two constraints shape this path:
+
+  1. The launcher masks the 108x108 canvas down to roughly a 72dp shape and only the
+     central 66dp circle is guaranteed visible. The furthest vertex sits 31.3dp from the
+     centre, inside that 33dp radius, so no mask crops the mark.
+  2. It is a single flat white silhouette, so the same artwork doubles as the monochrome
+     themed layer (Android 13+) instead of needing a separate file.
+
+  The proportions were chosen by rasterising candidates and comparing them: a narrower
+  bolt is legible but has too little presence at 48dp, and a taller one leaves no room
+  for the launcher's mask.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M49,84 L45,84 L49,61 L34,61 L59,24 L63,24 L59,47 L74,47 Z" />
+</vector>

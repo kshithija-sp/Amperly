@@ -1,0 +1,166 @@
+import java.util.Properties
+
+plugins {
+    id 'com.android.application'
+}
+
+// Keys are read from local.properties (gitignored) or environment variables of the same
+// name. Nothing here is committed.
+//
+//   GOOGLE_MAPS_API_KEY        - map, Place autocomplete and road routing.
+//   SUPABASE_URL               - https://<ref>.supabase.co
+//   SUPABASE_PUBLISHABLE_KEY   - the public sb_publishable_... key. Never a service key.
+//   VEHICLE_SPECS_API_URL      - optional normalised vehicle-specs endpoint (tier 3b).
+//   VEHICLE_SPECS_API_KEY      - key for that endpoint. Without both, tier 3b is skipped.
+//   VEHICLE_DATABASES_API_KEY  - Vehicle Databases key for direct YMMT lookups. When set it
+//                                takes precedence over the normalised endpoint above.
+//
+// Without the Supabase pair the app shows the sign-in screen and explains that the account
+// is what the data is authorised against. There is no fabricated offline identity.
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+
+def secret = { String name ->
+    (localProperties.getProperty(name) ?: System.getenv(name) ?: '').trim()
+}
+
+def googleMapsApiKey = secret('GOOGLE_MAPS_API_KEY')
+def googleMapsEnabled = !googleMapsApiKey.isEmpty()
+def supabaseUrl = secret('SUPABASE_URL')
+def supabasePublishableKey = secret('SUPABASE_PUBLISHABLE_KEY')
+def supabaseEnabled = !supabaseUrl.isEmpty() && !supabasePublishableKey.isEmpty()
+def vehicleSpecsApiUrl = secret('VEHICLE_SPECS_API_URL')
+def vehicleSpecsApiKey = secret('VEHICLE_SPECS_API_KEY')
+def vehicleSpecsApiEnabled = !vehicleSpecsApiUrl.isEmpty() && !vehicleSpecsApiKey.isEmpty()
+def vehicleDatabasesApiKey = secret('VEHICLE_DATABASES_API_KEY')
+
+if (vehicleSpecsApiUrl.isEmpty() != vehicleSpecsApiKey.isEmpty()) {
+    logger.warn('Amperly: set BOTH VEHICLE_SPECS_API_URL and VEHICLE_SPECS_API_KEY (or neither). ' +
+            'The third-party specs tier stays off until both are present.')
+}
+
+if (!googleMapsEnabled) {
+    logger.warn('Amperly: no GOOGLE_MAPS_API_KEY set, so the map, Place autocomplete and ' +
+            'road routing are disabled and the screens show an actionable setup notice.')
+}
+if (supabaseUrl.isEmpty() != supabasePublishableKey.isEmpty()) {
+    logger.warn('Amperly: set BOTH SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY (or neither). ' +
+            'Supabase stays off until both are present.')
+}
+if (supabasePublishableKey.startsWith('sb_secret_') || supabasePublishableKey.contains('service_role')) {
+    throw new GradleException('SUPABASE_PUBLISHABLE_KEY looks like a SECRET key. That bypasses ' +
+            'Row Level Security and must never ship in an app. Use the sb_publishable_ key.')
+}
+
+android {
+    namespace 'com.amperly.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.amperly.app"
+        minSdk 24
+        targetSdk 34
+        versionCode 14
+        versionName "3.1.6"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"$googleMapsApiKey\""
+        buildConfigField "boolean", "GOOGLE_MAPS_ENABLED", googleMapsEnabled.toString()
+        buildConfigField "String", "SUPABASE_URL", "\"$supabaseUrl\""
+        buildConfigField "String", "SUPABASE_PUBLISHABLE_KEY", "\"$supabasePublishableKey\""
+        buildConfigField "boolean", "SUPABASE_ENABLED", supabaseEnabled.toString()
+        buildConfigField "String", "VEHICLE_SPECS_API_URL", "\"$vehicleSpecsApiUrl\""
+        buildConfigField "String", "VEHICLE_SPECS_API_KEY", "\"$vehicleSpecsApiKey\""
+        buildConfigField "boolean", "VEHICLE_SPECS_API_ENABLED", vehicleSpecsApiEnabled.toString()
+        buildConfigField "String", "VEHICLE_DATABASES_API_KEY", "\"$vehicleDatabasesApiKey\""
+        buildConfigField "boolean", "VEHICLE_DATABASES_ENABLED",
+                (!vehicleDatabasesApiKey.isEmpty()).toString()
+        manifestPlaceholders["googleMapsApiKey"] = googleMapsApiKey
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+}
+
+// One-time bulk generation for the owned vehicle database. The generator lives in the test
+// source set so it never ships in the APK:
+//   ./gradlew :app:generateVehicleSpecs
+// It writes tools/generated/vehicle_specs.generated.json and REVIEW.md; it never edits the
+// shipped asset.
+tasks.register('generateVehicleSpecs', JavaExec) {
+    group = 'vehicle'
+    description = 'Estimate specs for tools/vehicle_candidates.json and flag manual review.'
+    dependsOn 'compileDebugUnitTestJavaWithJavac'
+    classpath = files(
+            layout.buildDirectory.dir('intermediates/javac/debug/compileDebugJavaWithJavac/classes'),
+            layout.buildDirectory.dir('intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes')
+    ) + configurations.getByName('debugUnitTestRuntimeClasspath')
+    mainClass.set('com.amperly.app.vehicle.SpecBulkGenerator')
+    args = [
+            rootProject.file('tools/vehicle_candidates.json').absolutePath,
+            rootProject.file('app/src/main/assets/vehicle_specs.json').absolutePath,
+            rootProject.file('tools/generated').absolutePath
+    ]
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+
+    // Android for Cars App Library
+    implementation 'androidx.car.app:app:1.4.0'
+
+    // Room (local read cache; Supabase is the source of truth)
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+
+    // Encrypted storage for Supabase session tokens
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.fragment:fragment:1.6.2'
+
+    // Supabase (PostgREST + GoTrue) over Retrofit/OkHttp
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Location, Maps, Places
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+    implementation 'com.google.android.libraries.places:places:3.3.0'
+
+    implementation 'androidx.navigation:navigation-fragment:2.7.7'
+    implementation 'androidx.navigation:navigation-ui:2.7.7'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.7.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // QR code generation
+    implementation 'com.google.zxing:core:3.5.3'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Stable ids for the bottom-navigation menu items.
+
+  The items are added to the Menu programmatically per role, so they need real
+  resource ids rather than raw integers: a raw int passed to setSelectedItemId()
+  is not a valid id resource, and the selection callback would be fragile to any
+  future re-ordering.
+-->
+<resources>
+    <item name="nav_discover" type="id" />
+    <item name="nav_route_plan" type="id" />
+    <item name="nav_reserve" type="id" />
+    <item name="nav_session" type="id" />
+    <item name="nav_safety" type="id" />
+    <item name="nav_host_dashboard" type="id" />
+    <item name="nav_host_add_station" type="id" />
+    <item name="nav_host_chat" type="id" />
+    <item name="nav_admin" type="id" />
+</resources>

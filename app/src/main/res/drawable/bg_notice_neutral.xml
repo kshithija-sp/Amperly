@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Status panels.
+
+  Referencing theme attributes keeps the panel correct in both modes, because the drawable
+  is inflated with the view's themed context.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="14dp" />
+    <solid android:color="?attr/colorSurfaceContainer" />
+</shape>

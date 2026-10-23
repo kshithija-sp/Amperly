@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Session safety.
+
+  Two things matter here and nothing else should compete with them: the explicit
+  "this is not an emergency service" statement, and the SOS button. Both sit above
+  the fold; contacts and location sharing are grouped into their own cards so the
+  page does not read as one long undifferentiated column of inputs.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/amp_screen_padding"
+        android:paddingBottom="@dimen/amp_space_xl">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CARE ON THE ROAD"
+            android:textAppearance="@style/TextAppearance.Amperly.Eyebrow" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/safety_title"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Amperly.ScreenTitle" />
+
+        <TextView
+            android:id="@+id/sosNoticeText"
+            style="@style/Widget.Amperly.Notice.Error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/safety_not_emergency" />
+
+        <!-- The one oversized tap target in the app, deliberately. -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sosButton"
+            style="@style/Widget.Amperly.Button.Danger"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:text="@string/safety_trigger_sos"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/sosStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_s"
+            android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+        <!-- =========================================================== Contacts -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_l">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/safety_section_contacts"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/contactsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/safety_contact_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/contactNameEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Amperly.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:hint="@string/safety_contact_phone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/contactPhoneEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addContactButton"
+                    style="@style/Widget.Amperly.Button.Tonal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:text="@string/safety_add_contact" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ================================================= Live location share -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Amperly.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/amp_space_m">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/safety_section_sharing"
+                    android:textAppearance="@style/TextAppearance.Amperly.SectionTitle" />
+
+                <TextView
+                    android:id="@+id/sharingStatusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_xs"
+                    android:textAppearance="@style/TextAppearance.Amperly.Body" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/amp_space_s"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/shareLocationButton"
+                        style="@style/Widget.Amperly.Button.Tonal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/safety_share_location" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/stopSharingButton"
+                        style="@style/Widget.Amperly.Button.Text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/amp_space_s"
+                        android:layout_weight="1"
+                        android:text="@string/safety_stop_sharing" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/emergencyNumbersText"
+            style="@style/Widget.Amperly.Notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m" />
+
+        <TextView
+            android:id="@+id/safetyHistoryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/amp_space_m"
+            android:textAppearance="@style/TextAppearance.Amperly.Label" />
+    </LinearLayout>
+</ScrollView>

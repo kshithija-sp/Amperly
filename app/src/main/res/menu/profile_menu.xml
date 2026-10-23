@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The profile dropdown. Sign out is hidden at runtime unless there is a session to end.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/profile_action_account"
+        android:title="@string/account_title" />
+
+    <item
+        android:id="@+id/profile_action_vehicle"
+        android:title="@string/vehicle_title" />
+
+    <item
+        android:id="@+id/profile_action_safety"
+        android:title="@string/safety_title" />
+
+    <item
+        android:id="@+id/profile_action_sign_out"
+        android:title="@string/account_sign_out" />
+</menu>
